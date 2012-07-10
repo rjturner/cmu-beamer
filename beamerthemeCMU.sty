@@ -1,0 +1,321 @@
+% Originally provided by Paulo Casanova
+% Modified by Ryan Turner
+
+\ProvidesPackage{beamerthemeCMU}[2010/09/01]
+
+\RequirePackage[overlay,absolute]{textpos}
+\RequirePackage{xcolor}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define and process template options
+\def\cmu@yes{yes}		% Simple value: "yes"
+\def\cmu@no{no}			% Simple value: "no"
+\def\cmu@left{left}		% Simple value: "left"
+\def\cmu@right{right}	% Simple value: "right"
+\def\cmu@none{none}		% Simple value: "none"
+
+% Show slide numbers [numbers] (default) or don't show slide numbers
+% [nonumbers]. "yes"/"no" will be saved in \cmu@numbers.
+\DeclareOptionBeamer{numbers}{\edef\cmu@numbers{\cmu@yes}}
+\DeclareOptionBeamer{nonumbers}{\edef\cmu@numbers{\cmu@no}}
+\ExecuteOptionsBeamer{numbers}
+
+% Show the sidebar on the left [sidebarleft] (default), show the sidebar on
+% the right [sidebarright] or don't show the sidebar [nosidebar]. "left",
+% "right" or "none" will be saved in \cmu@sidebar.
+\DeclareOptionBeamer{sidebarleft}{\edef\cmu@sidebar{\cmu@left}}
+\DeclareOptionBeamer{sidebarright}{\edef\cmu@sidebar{\cmu@right}}
+\DeclareOptionBeamer{nosidebar}{\edef\cmu@sidebar{\cmu@none}}
+\ExecuteOptionsBeamer{sidebarleft}
+
+% Show navigation buttons [navigation] or don't show the navigation buttons
+% [nonavigation] (default)
+\DeclareOptionBeamer{navigation}{\edef\cmu@navigation{\cmu@yes}}
+\DeclareOptionBeamer{nonavigation}{\edef\cmu@navigation{\cmu@no}}
+\ExecuteOptionsBeamer{nonavigation}
+
+% Process given options.
+\ProcessOptionsBeamer
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CMU standard colors
+% http://www.cmu.edu/marcom/brand-guidelines/print-web-products/web/index.html
+\definecolor{cmu_red}{RGB}{153,0,0}				% #990000
+\definecolor{cmu_dark_grey}{RGB}{70, 70, 70}			% #464646
+\definecolor{cmu_light_grey}{RGB}{212, 212, 212}		% #d4d4d4
+\definecolor{cmu_light_tan}{RGB}{243,240,233}			% #f3f0e9
+\definecolor{cmu_violet}{RGB}{100,76,86}			% #674c56
+\definecolor{cmu_blue}{RGB}{116,147,162}			% #7493a2
+\definecolor{cmu_mustard}{RGB}{193,165,98}			% #c1a562
+\definecolor{cmu_brown}{RGB}{147,98,65}				% #936241
+\definecolor{cmu_orange}{RGB}{209,119,2}			% #d17702
+\definecolor{cmu_green}{RGB}{153,153,51}			% #999933
+\definecolor{cmu_tan}{RGB}{172,157,116}				% #ac9d74
+
+% Set the color for the main text.
+\setbeamercolor{normal text}{fg=black,bg=white}
+
+% Set the structure color. Background is used with title and foreground is used
+% in bibliography.
+\setbeamercolor{structure}{fg=cmu_red,bg=white}
+
+
+% Set the color for titles.
+\setbeamercolor{titlelike}{fg=cmu_red}
+
+% Set the color for itemize and enumerate.
+\setbeamercolor{itemize item}{fg=black}
+\setbeamercolor{enumerate item}{fg=black}
+
+% Define colors for blocks.
+\setbeamercolor{block title}{fg=black,bg=cmu_tan}
+\setbeamercolor{block body}{fg=black,bg=cmu_light_tan}
+\setbeamercolor{block title example}{fg=black,bg=cmu_tan}
+\setbeamercolor{block body example}{fg=black,bg=cmu_light_tan}
+
+% Set everything else which I think is not used to green. If green is
+% picked up somewhere in your slides, it is probably one of these ;)
+\setbeamercolor{palette primary}{fg=green,bg=green}
+\setbeamercolor{palette secondary}{fg=green,bg=green}
+\setbeamercolor{palette tertiary}{fg=green,bg=green}
+\setbeamercolor{palette quaternary}{fg=green,bg=green}
+\setbeamercolor{separation line}{fg=green,bg=green}
+\setbeamercolor{structure text}{fg=green,bg=green}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw footer
+
+% Load CMU white logo.
+\pgfdeclareimage[interpolate=true,height=0.5cm]{cmu_logo}{cmu-logo-white}
+
+% Copied and modified from beamer infolines outer theme.
+\setbeamercolor{footer}{fg=white,bg=cmu_red}
+\defbeamertemplate*{footline}{CMU footer}
+{
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd=\paperwidth,ht=0.8cm,left]{footer}%
+			\begin{beamercolorbox}
+					[wd=0.5\paperwidth,ht=0.8cm,left,leftskip=5pt,sep=5pt]%
+					{footer}%
+				\ifx\cmu@numbers\cmu@yes
+					\insertframenumber{}%
+					/%
+					\inserttotalframenumber{}%
+				\fi
+			\end{beamercolorbox}%
+			\begin{beamercolorbox}
+					[wd=0.5\paperwidth,ht=0.8cm,right,rightskip=10pt]{footer}%
+				\pgfuseimage{cmu_logo}%
+			\end{beamercolorbox}%
+		\end{beamercolorbox}%
+	}%
+	\vskip0pt%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+% Copied and modified from beamer default inner theme.
+
+% Define colors for title page.
+\setbeamercolor{title}{fg=cmu_red,bg=white}
+
+% Load large CMU white logo.
+\pgfdeclareimage[interpolate=true,height=0.7cm]{cmu_llogo}{cmu-logo-white}
+
+% Define how much space should exist at the left of the page.
+\newdimen\cmu@titleleftspace
+\setlength{\cmu@titleleftspace}{1cm}
+
+% Define the title page.
+\setbeamertemplate{title page}%
+{%
+	\textblockcolour{cmu_red}%
+	\begin{textblock*}{\paperwidth}(0cm,0cm)%
+		\vspace{0.6cm}%
+		\hspace{\cmu@titleleftspace}\pgfuseimage{cmu_llogo}\par%
+		\vspace{0.6cm}%
+		\begin{beamercolorbox}[sep=8pt,left]{title}%
+			\usebeamerfont{title}%
+			\hspace{\cmu@titleleftspace}\inserttitle%
+			\par%
+			\ifx\insertsubtitle\@empty%
+			\else%
+				\vskip0.25em%
+				{%
+					\usebeamerfont{title}%
+					\usebeamercolor[fg]{subtitle}%
+					\hspace{\cmu@titleleftspace}\insertsubtitle%
+					\par%
+				}%
+			\fi%
+			\vspace{3cm}%
+			\begin{beamercolorbox}[sep=8pt,left]{date}%
+				\usebeamerfont{subtitle}%
+				\hspace{\cmu@titleleftspace}\insertauthor%
+			\end{beamercolorbox}%
+			\begin{beamercolorbox}[sep=8pt,left]{date}%
+				\usebeamerfont{subtitle}%
+				\hspace{\cmu@titleleftspace}\insertdate%
+			\end{beamercolorbox}%
+		\end{beamercolorbox}%
+		\vspace{\paperheight}
+	\end{textblock*}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sidebar
+% Code copied and modified from sidebar outer theme.
+
+% Used for sidebar presentation title
+\setbeamercolor{title in sidebar}{fg=black}
+
+% Used for sidebar presentation author
+\setbeamercolor{author in sidebar}{fg=black}
+
+% Used for section (shaded is used when section is not selected).
+%\setbeamercolor{palette sidebar secondary}{fg=black,bg=white}
+\setbeamercolor{section in sidebar}{fg=black,bg=white}
+\setbeamercolor{section in sidebar shaded}{fg=black}
+
+% Used for subsection (background is used when current subsection
+% is selected).
+\setbeamercolor{subsection in sidebar}{fg=black,bg=white}
+\setbeamercolor{subsection in sidebar shaded}{fg=black}
+
+% Sidebar width
+\newdimen\beamer@sidebarwidth
+\beamer@sidebarwidth=3\baselineskip
+
+% Sidebar background
+\setbeamercolor{sidebar}{bg=cmu_light_tan}
+
+% Generic function that will format a sidebar box. Receives three arguments,
+% 1 - How much to skip in the left
+% 2 - Box bolor
+% 3 - Text to place inside
+\def\beamer@sidebarformat#1#2#3{%
+	\begin{beamercolorbox}
+			[wd=\beamer@sidebarwidth,leftskip=#1,%
+			rightskip=1ex plus1fil,vmode]%
+			{#2}%
+	    \vbox{}%
+	    #3%
+		\par%
+		\vbox{}%
+		\vskip-1.5ex%
+	\end{beamercolorbox}
+}
+
+% How to print a "dimmed" section in the sidebar.
+\defbeamertemplate*{section in sidebar}{sidebar theme}
+{%
+	\vbox{%
+		\vskip1ex%
+    	\beamer@sidebarformat{3pt}{section in sidebar}{%
+			\insertsectionhead%
+		}%
+	}%
+}
+
+% How to print a currently selection section in the sidebar.
+\defbeamertemplate*{section in sidebar shaded}{sidebar theme}
+{%
+	\vbox{%
+		\vskip1ex%
+		\beamer@sidebarformat{3pt}{section in sidebar shaded}{%
+			\insertsectionhead%
+		}%
+	}%
+}
+
+% How to print a "dimmed" subsection in the sidebar.
+\defbeamertemplate*{subsection in sidebar}{sidebar theme}
+{%
+	\beamer@sidebarformat{5pt}{subsection in sidebar}{%
+		\insertsubsectionhead%
+	}%
+}
+
+% How to print a currently selected subsection in the sidebar.
+\defbeamertemplate*{subsection in sidebar shaded}{sidebar theme}
+{%
+	\beamer@sidebarformat{5pt}{subsection in sidebar shaded}{%
+		\insertsubsectionhead%
+	}%
+}
+
+% How to print a "dimmed" subsubsection in the sidebar.
+\defbeamertemplate*{subsubsection in sidebar}{sidebar theme}
+{%
+	\beamer@sidebarformat{7pt}{subsubsection in sidebar}{%
+		\insertsubsubsectionhead%
+	}%
+}
+
+% How to print a currently selected subsubsection in the sidebar.
+\defbeamertemplate*{subsubsection in sidebar shaded}{sidebar theme}
+{%
+	\beamer@sidebarformat{7pt}{subsubsection in sidebar shaded}{%
+		\insertsubsubsectionhead%
+	}%
+}
+
+% Check if any sidebar should be drawn.
+\ifx\cmu@sidebar\cmu@none%
+\else
+	% Define the beamer sidebar.
+	\setbeamersize{sidebar width \cmu@sidebar=\beamer@sidebarwidth}
+
+	% Defines the sidebar itself.
+	\defbeamertemplate*{sidebar \cmu@sidebar}{sidebar theme} {%
+		\beamer@tempdim=\beamer@sidebarwidth%
+
+		\advance\beamer@tempdim by -6pt%
+		{%
+			\usebeamerfont{title in sidebar}%
+			\vskip1.5em%
+			\hskip3pt%
+			\usebeamercolor[fg]{title in sidebar}%
+			\insertshorttitle[width=%
+					\beamer@tempdim,center,respectlinebreaks]%
+			\par%
+			\vskip1.25em%
+		}%
+		{%
+			\hskip3pt%
+			\usebeamercolor[fg]{author in sidebar}%
+			\usebeamerfont{author in sidebar}%
+			\insertshortauthor[width=%
+					\beamer@tempdim,center,respectlinebreaks]%
+			\par%
+			\vskip1.25em%
+		}%
+		\insertverticalnavigation{\beamer@sidebarwidth}%
+		\vfill
+		\ifx\cmu@sidebar\cmu@right%
+			\usebeamercolor{normal text}%
+			\llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
+		\fi%
+	}%
+
+	% Set margins
+	\setbeamersize{text margin left=0.5cm,text margin right=0.5cm}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Navigation: show or hide
+
+\ifx\cmu@navigation\cmu@yes
+	\setbeamertemplate{navigation symbols}{%
+		\insertslidenavigationsymbol{}%
+		\insertframenavigationsymbol{}%
+		\insertsubsectionnavigationsymbol{}%
+		\insertsectionnavigationsymbol{}%
+	}%
+\else
+	\setbeamertemplate{navigation symbols}{}
+\fi
+
